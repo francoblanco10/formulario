@@ -66,7 +66,7 @@
 
   <div class="form-container">
     <h2>Registro al Evento</h2>
-    <form id="registroForm">
+    <form id="registroForm" onsubmit="handleSubmit(event)">
       <label for="nombre">Nombre y Apellido:</label>
       <input type="text" id="nombre" name="nombre" required>
 
@@ -111,35 +111,40 @@
   </div>
 
   <script>
-    const asistentesInput = document.getElementById('asistentes');
-    const datosFamiliaresDiv = document.getElementById('datosFamiliares');
+  const asistentesInput = document.getElementById('asistentes');
+  const datosFamiliaresDiv = document.getElementById('datosFamiliares');
 
-    asistentesInput.addEventListener('input', () => {
-      const cantidad = parseInt(asistentesInput.value);
-      datosFamiliaresDiv.innerHTML = '';
+  asistentesInput.addEventListener('input', () => {
+    const cantidad = parseInt(asistentesInput.value);
+    datosFamiliaresDiv.innerHTML = '';
 
-      if (!isNaN(cantidad) && cantidad > 0) {
-        for (let i = 1; i <= cantidad; i++) {
-          const label = document.createElement('label');
-          label.textContent = `Edad o Fecha de Nacimiento del integrante ${i}:`;
+    if (!isNaN(cantidad) && cantidad > 0) {
+      for (let i = 1; i <= cantidad; i++) {
+        const label = document.createElement('label');
+        label.textContent = `Edad o Fecha de Nacimiento del integrante ${i}:`;
 
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.name = `integrante_${i}`;
-          input.placeholder = 'Ej: 30 años o 01/01/1995';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = `integrante_${i}`;
+        input.placeholder = 'Ej: 30 años o 01/01/1995';
 
-          datosFamiliaresDiv.appendChild(label);
-          datosFamiliaresDiv.appendChild(input);
-        }
+        datosFamiliaresDiv.appendChild(label);
+        datosFamiliaresDiv.appendChild(input);
       }
-    });
+    }
+  });
 
-    document.getElementById('registroForm').addEventListener('submit', function(e) {
-      if (!document.getElementById('condiciones').checked) {
-        e.preventDefault();
-        alert('Debes aceptar los términos y condiciones para continuar.');
-      }
-    });
-  </script>
+  document.getElementById('registroForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Evita envío
+    if (!document.getElementById('condiciones').checked) {
+      alert('Debes aceptar los términos y condiciones para continuar.');
+      return;
+    }
+
+    alert('¡Gracias por completar el formulario!');
+    e.target.reset(); // Limpia el formulario
+    document.getElementById('datosFamiliares').innerHTML = ''; // Limpia también los adicionales
+  });
+</script>
 </body>
 </html>
